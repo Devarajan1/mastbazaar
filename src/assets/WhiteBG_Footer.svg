@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="370" viewBox="0 0 1920 370">
+  <defs>
+    <clipPath id="clip-WhiteBG_Footer">
+      <rect width="1920" height="370"/>
+    </clipPath>
+  </defs>
+  <g id="WhiteBG_Footer" clip-path="url(#clip-WhiteBG_Footer)">
+    <path id="Intersection_6" data-name="Intersection 6" d="M4.5,370.5V155.821C19.728,88.981,72.062,40.459,137.821,38.506c.49.309,62.937-2.3,62.937-2.3L1746.049.5h9.644A155.232,155.232,0,0,1,1796,7.183c62.456,19,113.079,76.131,128.5,147.5V370.5Z" transform="translate(-4.5 -0.5)" fill="#fff"/>
+  </g>
+</svg>
