@@ -6,8 +6,9 @@ import LocationIcon from '../public/assets/areas-icon-map.png'
 import Locate from '../public/assets/areas-icon-locate.png'
 import { Badge } from "@/components/ui/badge"
 import { Check, ChevronsUpDown } from "lucide-react"
-
+import notServicable from '../public/assets/areas-icon-error.png'
 import { cn } from "@/lib/utils"
+import locationList from '../app/api/google'
 
 import {
   Command,
@@ -28,7 +29,8 @@ function Page() {
   const [locationLongitude, setLocationLongitude] = useState(null)
   const [areaList, setAreaList] = useState([])
   const [input, setInput] = useState(null)
-  const [serviceable, setServiceable] = useState(false)
+  const [serviceable, setServiceable] = useState(true)
+  const [currentLocationData, setCurrentLocationData] = useState([])
   const defaultCenter = {
     lat: locationLattitude, lng: locationLongitude
   }
@@ -37,6 +39,7 @@ function Page() {
   useEffect(() => {
     if (locationLattitude !== null) {
       postIp()
+      locationList()
     }
   }, [locationLattitude])
 
@@ -65,9 +68,9 @@ function Page() {
   }
   async function postIp() {
 
-    const postData={
-      "latitude": 12.8082329,
-      "longitude": 80.2166807
+    const postData = {
+      "latitude": locationLattitude,
+      "longitude": locationLongitude
     }
     fetch('https://mtm59oln2j.execute-api.ap-south-1.amazonaws.com/prodv2/serviceability', {
       method: 'POST',
@@ -77,13 +80,14 @@ function Page() {
       },
       body: JSON.stringify(postData) // Convert data to JSON string
     })
-    .then(response => response.json()) // Parse JSON response
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+      .then(response => response.json()) // Parse JSON response
+      .then(data => {
+        setCurrentLocationData(data.body.body)
+        setServiceable(data.body.body.is_serviceable)
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
   return (
     <div className="w-screen h-screen flex justify-between font-[PingFang]">
@@ -118,11 +122,17 @@ function Page() {
         </div>
         <div className="w-[95%]  h-[30%] bg-[#f7f7f7] border-[.05rem] border-[#cccccc] rounded-sm flex  justify-around"  >
 
-          <><div className=" flex flex-col w-[50%] justify-center ml-6">
+          {serviceable ? <><div className=" flex flex-col w-[50%] justify-center ml-6">
             <p className="text-[#555555] text-2xl font-bold ">View Your Area</p>
             <p className=" text-[#555555] text-lg">Please Select any of the above region</p>
           </div>
-            <Image className="w-[40%] h-[80%] " src={LocationIcon} alt="Map Icon" /></>
+            <Image className="w-[40%] h-[80%] " src={LocationIcon} alt="Map Icon" /></> 
+
+            : <><div className=" flex flex-col w-[50%] justify-center ml-6">
+              <p className="text-[#ff2323] text-3xl font-bold ">Sorry!</p>
+              <p className=" text-[#555555] mt-2 text-lg">We do not serve your region. Please select a different location.</p>
+            </div>
+            <Image className="w-[40%] h-[80%] " src={notServicable} alt="Map Icon" /></>}
         </div>
       </div>
     </div>
