@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import areaBg from '../public/assets/Area-bg.png'
 import LocationIcon from '../public/assets/areas-icon-map.png'
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/command"
 
 
-function page() {
+function Page() {
   const ServingAreas = ['Padur', 'Kelambakkam', 'Egattur', 'Pudupakkam', 'Navalur', 'Kazipattur', 'Siruseri', 'Thaiyur', 'Thazambur']
   const ServiceCount = [5, 10, 15, 8, 14, 16, 14, 14, 12]
   const [locationLattitude, setLocationLattitude] = useState(null)
@@ -87,7 +87,7 @@ function page() {
       </div>
       <div className="w-[55%] h-full flex flex-col  justify-evenly">
         <p className="text-5xl  font-semibold ">Areas We Serving</p>
-        <p className="text-3xl  ">We're delivering freshness at your doorstep!</p>
+        <p className="text-3xl  "><p>We&apos;re delivering freshness at your doorstep!</p></p>
         <div className="flex ">
           <Command onChange={handleInputChange} className="rounded-lg w-[70%]">
             <CommandInput className=" w-full  border-2 border-[#d3d2d2] rounded-full py-3 px-6 outline-none" placeholder="Type a command or search..." />
@@ -109,7 +109,7 @@ function page() {
         </div>
         <div className="">
           {ServingAreas.map((Areas, index) => (
-            <Badge variant="outline" className="m-3 ml-0 bg-[#f7f7f7] justify-center px-6 py-2"><div><p>{Areas}<span className="ml-2 p-1 bg-[#e1e1e1] rounded-full">{ServiceCount[index]}</span></p></div></Badge>))}
+            <Badge variant="outline" key={index} className="m-3 ml-0 bg-[#f7f7f7] justify-center px-6 py-2"><div><p>{Areas}<span className="ml-2 p-1 bg-[#e1e1e1] rounded-full">{ServiceCount[index]}</span></p></div></Badge>))}
         </div>
         <div className="w-[95%]  h-[30%] bg-[#f7f7f7] border-[.05rem] border-[#cccccc] rounded-sm flex  justify-around"  >
           {locationLattitude ? <div id="map" className="w-full h-full"></div>
@@ -124,7 +124,7 @@ function page() {
   )
 }
 
-export default page
+export default Page
 
 
 

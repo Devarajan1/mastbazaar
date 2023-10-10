@@ -16,9 +16,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdRjCVZlhrq72RuEklEyyxYlBRCYhI2Sw&libraries=places"></script>
-      </head>
       <body className={inter.className} style={{fontFamily:'PingFang'}}>{children}</body>
     </html>
   )
