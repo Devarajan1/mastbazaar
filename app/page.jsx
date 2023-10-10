@@ -4,7 +4,6 @@ import Image from 'next/image'
 import areaBg from '../public/assets/Area-bg.png'
 import LocationIcon from '../public/assets/areas-icon-map.png'
 import Locate from '../public/assets/areas-icon-locate.png'
-
 import { Badge } from "@/components/ui/badge"
 import { Check, ChevronsUpDown } from "lucide-react"
 
@@ -27,12 +26,14 @@ function Page() {
   const ServiceCount = [5, 10, 15, 8, 14, 16, 14, 14, 12]
   const [locationLattitude, setLocationLattitude] = useState(null)
   const [locationLongitude, setLocationLongitude] = useState(null)
+  const [areaList, setAreaList] = useState([])
   const [input, setInput] = useState(null)
+  const [serviceable, setServiceable] = useState(false)
   const defaultCenter = {
     lat: locationLattitude, lng: locationLongitude
   }
 
- 
+
   useEffect(() => {
     if (locationLattitude !== null) {
       postIp()
@@ -63,18 +64,26 @@ function Page() {
     }
   }
   async function postIp() {
-    response = await fetch(
-      'https://fzmyn3cnv2rullb5qfu5gvdv4q0kotfn.lambda-url.ap-south-1.on.aws', {
+
+    const postData={
+      "latitude": 12.8082329,
+      "longitude": 80.2166807
+    }
+    fetch('https://mtm59oln2j.execute-api.ap-south-1.amazonaws.com/prodv2/serviceability', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json', // Specify content type as JSON
+        // You can add other headers if needed
       },
-      body: JSON.stringify({
-        "latitude": locationLattitude,
-        "longitude": locationLongitude
-      }),
-    }),
-      console.log(response)
+      body: JSON.stringify(postData) // Convert data to JSON string
+    })
+    .then(response => response.json()) // Parse JSON response
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   }
   return (
     <div className="w-screen h-screen flex justify-between font-[PingFang]">
@@ -98,7 +107,7 @@ function Page() {
             </CommandList>
           </Command>
 
-          <div  onClick={() => Location()} className="ml-4 max-h-[65px]  flex hover:cursor-pointer justify-center border-2 border-[#d3d2d2] rounded-full py-4 px-4">
+          <div onClick={() => Location()} className="ml-4 max-h-[65px]  flex hover:cursor-pointer justify-center border-2 border-[#d3d2d2] rounded-full py-4 px-4">
             <Image className="w-[20%]  " src={Locate} alt="Locate" />
             <p className="pt-1 ml-1 cursor-pointer"  >Locate me</p>
           </div>
@@ -108,12 +117,12 @@ function Page() {
             <Badge variant="outline" key={index} className="m-3 ml-0 bg-[#f7f7f7] justify-center px-6 py-2"><div><p>{Areas}<span className="ml-2 p-1 bg-[#e1e1e1] rounded-full">{ServiceCount[index]}</span></p></div></Badge>))}
         </div>
         <div className="w-[95%]  h-[30%] bg-[#f7f7f7] border-[.05rem] border-[#cccccc] rounded-sm flex  justify-around"  >
-          
-             <><div className=" flex flex-col w-[50%] justify-center ml-6">
-              <p className="text-[#555555] text-2xl font-bold ">View Your Area</p>
-              <p className=" text-[#555555] text-lg">Please Select any of the above region</p>
-            </div>
-              <Image className="w-[40%] h-[80%] " src={LocationIcon} alt="Map Icon" /></>
+
+          <><div className=" flex flex-col w-[50%] justify-center ml-6">
+            <p className="text-[#555555] text-2xl font-bold ">View Your Area</p>
+            <p className=" text-[#555555] text-lg">Please Select any of the above region</p>
+          </div>
+            <Image className="w-[40%] h-[80%] " src={LocationIcon} alt="Map Icon" /></>
         </div>
       </div>
     </div>
